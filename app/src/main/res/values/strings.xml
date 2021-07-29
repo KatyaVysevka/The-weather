@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">The Weather</string>
+
+    <string name="explanationRequestLocationPermission">Для корректной работы разрешите приложению доступ к данным о местоположении устройства. </string>
+    <string name="attention">Внимание!</string>
+    <string name="ok">Ok</string>
+    <string name="noGPS">Функция "Местоположение" отключена</string>
+    <string name="noPermissions">Определение местоположения отключено</string>
+    <string name="turnOn">Включить</string>
+
 </resources>
