@@ -15,29 +15,29 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import java.lang.ref.WeakReference
 
-class LocationHelper(base: Context?) : ContextWrapper(base) {
+class LocationHelper(base: Context?, view: LocationView?) : ContextWrapper(base) {
 
-    private var viewState: WeakReference<MainView>? = null
+    private var locationView: WeakReference<LocationView>? = WeakReference(view)
 
     fun dialogExplanationRequestLocationPermission() {
         AlertDialog.Builder(this)
             .setMessage(getString(R.string.explanationRequestLocationPermission))
             .setTitle(getString(R.string.attention))
             .setOnCancelListener { dialogInterface: DialogInterface? ->
-                viewState?.get()?.requestLocationPermissions()
+                locationView?.get()?.requestLocationPermissions()
             }
             .setPositiveButton(
                 getString(R.string.ok)
             ) { dialogInterface: DialogInterface?, i: Int ->
-                viewState?.get()?.requestLocationPermissions()
+                locationView?.get()?.requestLocationPermissions()
             }
             .create()
             .show()
     }
 
-    fun attachView(view: MainView) {
-        viewState = WeakReference(view)
-    }
+//    fun attachView(view: MainView) {
+//        viewState = WeakReference(view)
+//    }
 
     fun getLocationPermission() {
         if (hasLocationPermission()) {
@@ -45,7 +45,7 @@ class LocationHelper(base: Context?) : ContextWrapper(base) {
             checkIfLocationEnabled()
         } else {
             logDebug("Location permission not granted")
-            viewState?.get()?.requestLocationPermissions()
+            locationView?.get()?.requestLocationPermissions()
         }
     }
 
@@ -54,7 +54,7 @@ class LocationHelper(base: Context?) : ContextWrapper(base) {
          if (isLocationEnabled()) {
              getUserCurrentLocation()
          } else {
-             viewState?.get()?.performIfLocationDisabled()
+             locationView?.get()?.performIfLocationDisabled()
          }
     }
 
@@ -86,7 +86,8 @@ class LocationHelper(base: Context?) : ContextWrapper(base) {
         override fun onLocationResult(locationResult: LocationResult) {
             super.onLocationResult(locationResult)
             removeLocationUpdates()
-            viewState?.get()?.locationResult(locationResult.lastLocation)
+            locationView?.get()?.locationResult(locationResult.lastLocation)
+
         }
     }
 
@@ -95,5 +96,4 @@ class LocationHelper(base: Context?) : ContextWrapper(base) {
             .getFusedLocationProviderClient(this)
             .removeLocationUpdates(locationCallback)
     }
-
 }

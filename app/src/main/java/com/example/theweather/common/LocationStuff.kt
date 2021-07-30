@@ -3,8 +3,6 @@ package com.example.theweather.common
 import android.Manifest
 import com.google.android.gms.location.LocationRequest
 
-
-
 //if location disabled
 const val LOCATION_ENABLE_CODE = 10
 

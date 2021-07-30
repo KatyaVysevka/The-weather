@@ -10,12 +10,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.theweather.common.*
+import com.example.theweather.common.LOCATION_PERMISSIONS
+import com.example.theweather.common.LOCATION_PERMISSION_REQUEST_CODE
+import com.example.theweather.common.logDebug
+import com.example.theweather.repository.WeatherRepository
+import com.example.theweather.rest.API_WEATHER_KEY
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : AppCompatActivity(), LocationView {
 
-    private val locationHelper = LocationHelper(this)
+    private lateinit var locationHelper: LocationHelper
+
+    private val repository = WeatherRepository()
 
     private var resultEnableLocation = registerForActivityResult(
         ActivityResultContracts
@@ -36,7 +42,7 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        locationHelper.attachView(this)
+        locationHelper = LocationHelper(baseContext, this)
         locationHelper.getLocationPermission()
     }
 
@@ -50,6 +56,39 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun locationResult(location: Location) {
         logDebug("locationResult: ${location.latitude}\t ${location.longitude}")
+
+//        retrofit
+//            .getWeatherRetrofit(location.latitude.toString(),
+//            location.longitude.toString(),
+//            API_WEATHER_KEY)
+//            .enqueue(object : Callback<WeatherResponse> {
+//            override fun onResponse(
+//                call: Call<WeatherResponse>,
+//                response: Response<WeatherResponse>
+//            ) {
+//                logDebug("response.code(): ${response.code()}\n")
+//                logDebug("${response.body()}")
+//            }
+//
+//            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+//                logDebug("onFailure: ${t.message}")
+//            }
+//        })
+
+        val disposable = repository
+            .getWeather(
+                location.latitude.toString(),
+                location.longitude.toString(),
+                API_WEATHER_KEY
+            )
+            .subscribe(
+                {
+                    logDebug("WeatherResponse:\n $it")
+                },
+                { e ->
+                    logDebug("error:\n ${e.localizedMessage}")
+                }
+            )
     }
 
     //handle the result from requested permissions.
