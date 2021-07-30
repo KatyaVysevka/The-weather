@@ -4,4 +4,12 @@
     <string name="bottom_text_1">Today</string>
     <string name="bottom_text_2">Forecast</string>
     <string name="share">Share</string>
+
+    <string name="explanationRequestLocationPermission">Для корректной работы разрешите приложению доступ к данным о местоположении устройства. </string>
+    <string name="attention">Внимание!</string>
+    <string name="ok">Ok</string>
+    <string name="noGPS">Функция "Местоположение" отключена</string>
+    <string name="noPermissions">Определение местоположения отключено</string>
+    <string name="turnOn">Включить</string>
+
 </resources>
