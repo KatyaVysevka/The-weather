@@ -13,13 +13,21 @@ import androidx.core.content.ContextCompat
 import com.example.theweather.common.LOCATION_PERMISSIONS
 import com.example.theweather.common.LOCATION_PERMISSION_REQUEST_CODE
 import com.example.theweather.common.logDebug
+import com.example.theweather.databinding.ActivityMainBinding
+import com.example.theweather.fragments.FirstFragment
+import com.example.theweather.fragments.SecondFragment
+import com.example.theweather.fragments.SecondFragment.Companion.newInstance
 import com.example.theweather.repository.WeatherRepository
 import com.example.theweather.rest.API_WEATHER_KEY
 import com.google.android.material.snackbar.Snackbar
+import java.lang.reflect.Array.newInstance
+import javax.xml.datatype.DatatypeFactory.newInstance
+import javax.xml.xpath.XPathFactory.newInstance
 
 class MainActivity : AppCompatActivity(), LocationView {
 
     private lateinit var locationHelper: LocationHelper
+    lateinit var binding: ActivityMainBinding
 
     private val repository = WeatherRepository()
 
@@ -41,9 +49,22 @@ class MainActivity : AppCompatActivity(), LocationView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         locationHelper = LocationHelper(baseContext, this)
         locationHelper.getLocationPermission()
+
+        binding.bottomNav.setOnItemSelectedListener{
+            when (it.itemId) {
+                R.id.today -> supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, FirstFragment.newInstance()).commit()
+                R.id.forecast -> supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, SecondFragment.newInstance()).commit()
+            }
+            true
+        }
+
+
     }
 
     override fun requestLocationPermissions() {
