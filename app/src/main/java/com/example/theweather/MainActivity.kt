@@ -16,13 +16,9 @@ import com.example.theweather.common.logDebug
 import com.example.theweather.databinding.ActivityMainBinding
 import com.example.theweather.fragments.FirstFragment
 import com.example.theweather.fragments.SecondFragment
-import com.example.theweather.fragments.SecondFragment.Companion.newInstance
 import com.example.theweather.repository.WeatherRepository
-import com.example.theweather.rest.API_WEATHER_KEY
 import com.google.android.material.snackbar.Snackbar
-import java.lang.reflect.Array.newInstance
-import javax.xml.datatype.DatatypeFactory.newInstance
-import javax.xml.xpath.XPathFactory.newInstance
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainActivity : AppCompatActivity(), LocationView {
 
@@ -30,6 +26,9 @@ class MainActivity : AppCompatActivity(), LocationView {
     lateinit var binding: ActivityMainBinding
 
     private val repository = WeatherRepository()
+
+    private val locationResult: MutableStateFlow<Location?> = MutableStateFlow(null)
+
 
     private var resultEnableLocation = registerForActivityResult(
         ActivityResultContracts
@@ -54,17 +53,18 @@ class MainActivity : AppCompatActivity(), LocationView {
         locationHelper = LocationHelper(baseContext, this)
         locationHelper.getLocationPermission()
 
-        binding.bottomNav.setOnItemSelectedListener{
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, FirstFragment.newInstance(locationResult)).commit()
+
+        binding.bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.today -> supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, FirstFragment.newInstance()).commit()
+                    .replace(R.id.fragmentContainer, FirstFragment.newInstance(locationResult)).commit()
                 R.id.forecast -> supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainer, SecondFragment.newInstance()).commit()
             }
             true
         }
-
-
     }
 
     override fun requestLocationPermissions() {
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), LocationView {
 
     override fun locationResult(location: Location) {
         logDebug("locationResult: ${location.latitude}\t ${location.longitude}")
-
+        locationResult.value = location
 //        retrofit
 //            .getWeatherRetrofit(location.latitude.toString(),
 //            location.longitude.toString(),
@@ -96,20 +96,20 @@ class MainActivity : AppCompatActivity(), LocationView {
 //            }
 //        })
 
-        val disposable = repository
-            .getWeather(
-                location.latitude.toString(),
-                location.longitude.toString(),
-                API_WEATHER_KEY
-            )
-            .subscribe(
-                {
-                    logDebug("WeatherResponse:\n $it")
-                },
-                { e ->
-                    logDebug("error:\n ${e.localizedMessage}")
-                }
-            )
+//        val disposable = repository
+//            .getWeather(
+//                location.latitude.toString(),
+//                location.longitude.toString(),
+//                API_WEATHER_KEY
+//            )
+//            .subscribe(
+//                {
+//                    logDebug("WeatherResponse:\n $it")
+//                },
+//                { e ->
+//                    logDebug("error:\n ${e.localizedMessage}")
+//                }
+//            )
     }
 
     //handle the result from requested permissions.
