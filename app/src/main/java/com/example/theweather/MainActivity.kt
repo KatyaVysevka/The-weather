@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), LocationView {
                 R.id.today -> supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainer, FirstFragment.newInstance(locationResult)).commit()
                 R.id.forecast -> supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, SecondFragment.newInstance()).commit()
+                    .replace(R.id.fragmentContainer, SecondFragment.newInstance(locationResult)).commit()
             }
             true
         }
@@ -166,5 +166,13 @@ class MainActivity : AppCompatActivity(), LocationView {
             resultEnableLocation.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         }.setActionTextColor(ContextCompat.getColor(this, R.color.white))
         snackbar.show()
+    }
+
+    public fun imageChoice (description: String): Int = when (description){
+        "Clear" ->  R.drawable.ic_sun  //ResourcesCompat.getDrawable(context?.resources!!, R.drawable.ic_sun, null)
+        "Clouds" ->  R.drawable.ic_cloudy
+        "Clouds" ->  R.drawable.ic_raining
+        else -> R.drawable.ic_snow
+
     }
 }
