@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.theweather.R
+import com.example.theweather.common.imageChoice
+import com.example.theweather.common.imageChoiceNight
 import com.example.theweather.databinding.ItemBinding
 import com.example.theweather.modelWeek.Daily
 import java.text.SimpleDateFormat
@@ -39,23 +41,10 @@ class WeatherAdapter : ListAdapter<Daily, WeatherAdapter.WeatherHolder>(DiffCall
             ivWeather13.setImageResource(imageChoice(daily.weather.get(0).description))
             ivWeather16.setImageResource(imageChoice(daily.weather.get(0).description))
             ivWeather19.setImageResource(imageChoice(daily.weather.get(0).description))
-            ivWeather22.setImageResource(imageChoice(daily.weather.get(0).description))
+            ivWeather22.setImageResource(imageChoiceNight(daily.weather.get(0).description))
 
         }
-        private fun imageChoice(description: String): Int = when (description) {
-            "clear sky" -> R.drawable.ic_sun
-            "few clouds" -> R.drawable.ic_cloudy_sun
-            "scattered clouds" -> R.drawable.ic_cloud
-            "broken clouds" -> R.drawable.ic_clouds
-            "shower rain" -> R.drawable.ic_raining
-            "rain" -> R.drawable.ic_rain
-            "moderate rain" -> R.drawable.ic_rain
-            "light rain" -> R.drawable.ic_light_rain
-            "thunderstorm" -> R.drawable.ic_storm_raining
-            "mist" -> R.drawable.ic_mist
-            "snow" -> R.drawable.ic_snow
-            else -> R.drawable.ic_exclamation_mark
-        }
+
 
         //convert timestamp to day of the week
         fun getDayOfWeek(timestamp: Double): String {

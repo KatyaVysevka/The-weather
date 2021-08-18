@@ -16,7 +16,6 @@ import com.example.theweather.common.logDebug
 import com.example.theweather.databinding.ActivityMainBinding
 import com.example.theweather.fragments.FirstFragment
 import com.example.theweather.fragments.SecondFragment
-import com.example.theweather.repository.WeatherRepository
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -24,8 +23,6 @@ class MainActivity : AppCompatActivity(), LocationView {
 
     private lateinit var locationHelper: LocationHelper
     lateinit var binding: ActivityMainBinding
-
-    private val repository = WeatherRepository()
 
     private val locationResult: MutableStateFlow<Location?> = MutableStateFlow(null)
 
@@ -78,38 +75,7 @@ class MainActivity : AppCompatActivity(), LocationView {
     override fun locationResult(location: Location) {
         logDebug("locationResult: ${location.latitude}\t ${location.longitude}")
         locationResult.value = location
-//        retrofit
-//            .getWeatherRetrofit(location.latitude.toString(),
-//            location.longitude.toString(),
-//            API_WEATHER_KEY)
-//            .enqueue(object : Callback<WeatherResponse> {
-//            override fun onResponse(
-//                call: Call<WeatherResponse>,
-//                response: Response<WeatherResponse>
-//            ) {
-//                logDebug("response.code(): ${response.code()}\n")
-//                logDebug("${response.body()}")
-//            }
-//
-//            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-//                logDebug("onFailure: ${t.message}")
-//            }
-//        })
 
-//        val disposable = repository
-//            .getWeather(
-//                location.latitude.toString(),
-//                location.longitude.toString(),
-//                API_WEATHER_KEY
-//            )
-//            .subscribe(
-//                {
-//                    logDebug("WeatherResponse:\n $it")
-//                },
-//                { e ->
-//                    logDebug("error:\n ${e.localizedMessage}")
-//                }
-//            )
     }
 
     //handle the result from requested permissions.
@@ -166,13 +132,5 @@ class MainActivity : AppCompatActivity(), LocationView {
             resultEnableLocation.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         }.setActionTextColor(ContextCompat.getColor(this, R.color.white))
         snackbar.show()
-    }
-
-    public fun imageChoice (description: String): Int = when (description){
-        "Clear" ->  R.drawable.ic_sun  //ResourcesCompat.getDrawable(context?.resources!!, R.drawable.ic_sun, null)
-        "Clouds" ->  R.drawable.ic_cloudy
-        "Clouds" ->  R.drawable.ic_raining
-        else -> R.drawable.ic_snow
-
     }
 }
