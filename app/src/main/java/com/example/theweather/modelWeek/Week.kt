@@ -4,11 +4,10 @@ import com.google.gson.annotations.SerializedName
 
 
 data class Week (
-
-    @SerializedName("lat") var lat : Double,
-    @SerializedName("lon") var lon : Double,
-    @SerializedName("timezone") var timezone : String,
-    @SerializedName("timezone_offset") var timezoneOffset : Int,
-    @SerializedName("daily") var daily : List<Daily>
+    @SerializedName("cod") var cod : String,
+    @SerializedName("message") var message : Double,
+    @SerializedName("cnt") var cnt : Double,
+    @SerializedName("list") var list : List<ListWeek>,
+    @SerializedName("city") var city : City
 
 )

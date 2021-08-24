@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.theweather.common.logDebug
 import com.example.theweather.databinding.FragmentSecondBinding
+import com.example.theweather.modelWeek.ListWeek
 import com.example.theweather.modelWeek.Week
 import com.example.theweather.rest.API_WEATHER_KEY
 import com.example.theweather.rest.retrofit
@@ -40,6 +41,13 @@ class SecondFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recycler.adapter = adapter
 
+        fun List<ListWeek>.filteredByTime() = this.filter {
+            it.dtTxt.contains("12:00")
+                || it.dtTxt.contains("15:00")
+                || it.dtTxt.contains("18:00")
+                || it.dtTxt.contains("21:00")}
+
+
 
         CoroutineScope(Dispatchers.IO).launch {
             location?.collect {
@@ -48,12 +56,14 @@ class SecondFragment : Fragment() {
                 }
                 logDebug("locationResult in fragment 2: ${it.latitude}\t ${it.longitude}")
 
+
+
                 retrofit
                     .getWeatherDailyRetrofit(
                         lat = it.latitude.toString(),
                         it.longitude.toString(),
                         API_WEATHER_KEY,
-                        "hourly,minutely,alerts,current","metric"
+                        "metric"
                     )
                     .enqueue(object : Callback<Week> {
                         override fun onResponse(
@@ -63,7 +73,7 @@ class SecondFragment : Fragment() {
                             logDebug("response.code(): ${response.code()}\n")
                             logDebug("${response.body()}") // ==WeatherResponse
 
-                            adapter.submitList(response?.body()?.daily)
+                            adapter.submitList(response?.body()?.list?.filteredByTime())
 
 
                         }

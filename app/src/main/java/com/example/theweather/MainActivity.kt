@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(), LocationView {
 
     private lateinit var locationHelper: LocationHelper
     lateinit var binding: ActivityMainBinding
+   // lateinit var viewModel: WeatherViewModel
 
     private val locationResult: MutableStateFlow<Location?> = MutableStateFlow(null)
 
@@ -49,6 +50,8 @@ class MainActivity : AppCompatActivity(), LocationView {
         setContentView(binding.root)
         locationHelper = LocationHelper(baseContext, this)
         locationHelper.getLocationPermission()
+       // viewModel = WeatherViewModel()
+
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, FirstFragment.newInstance(locationResult)).commit()

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import com.example.theweather.R
+//import com.example.theweather.WeatherViewModel
 import com.example.theweather.common.imageChoice
 import com.example.theweather.common.logDebug
 import com.example.theweather.databinding.FragmentFirstBinding
@@ -28,6 +29,7 @@ class FirstFragment : Fragment() {
     private var _binding: FragmentFirstBinding? = null
     private val binding: FragmentFirstBinding get() = requireNotNull(_binding)
     private var location: MutableStateFlow<Location?>? = null
+   // lateinit var viewModel: WeatherViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

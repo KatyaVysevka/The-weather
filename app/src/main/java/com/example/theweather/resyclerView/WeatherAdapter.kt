@@ -9,39 +9,52 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.theweather.R
 import com.example.theweather.common.imageChoice
 import com.example.theweather.common.imageChoiceNight
+import com.example.theweather.common.logDebug
 import com.example.theweather.databinding.ItemBinding
-import com.example.theweather.modelWeek.Daily
+import com.example.theweather.modelWeek.ListWeek
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class WeatherAdapter : ListAdapter<Daily, WeatherAdapter.WeatherHolder>(DiffCallback()) {
+class WeatherAdapter : ListAdapter<ListWeek, WeatherAdapter.WeatherHolder>(DiffCallback()) {
 
 
-    class DiffCallback : DiffUtil.ItemCallback<Daily>() {
-        override fun areItemsTheSame(oldItem: Daily,
-                                     newItem: Daily) = oldItem.dt == newItem.dt
+    class DiffCallback : DiffUtil.ItemCallback<ListWeek>() {
+        override fun areItemsTheSame(oldItem: ListWeek,
+                                     newItem: ListWeek) = oldItem.dt == newItem.dt
 
-        override fun areContentsTheSame(oldItem: Daily,
-                                        newItem: Daily) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: ListWeek,
+                                        newItem: ListWeek) = oldItem == newItem
     }
 
     class WeatherHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = ItemBinding.bind(item)
-        fun bind(daily: Daily) = with(binding) {
-            textDay.text = getDayOfWeek(daily.dt)
-            tvWeather13.text = daily.weather.get(0).main
-            tvWeather16.text = daily.weather.get(0).main
-            tvWeather19.text = daily.weather.get(0).main
-            tvWeather22.text = daily.weather.get(0).main
-            tvTemperature13.text = daily.temp.day.toInt().toString()
-            tvTemperature16.text = daily.temp.max.toInt().toString()
-            tvTemperature19.text = daily.temp.eve.toInt().toString()
-            tvTemperature22.text = daily.temp.night.toInt().toString()
-            ivWeather13.setImageResource(imageChoice(daily.weather.get(0).description))
-            ivWeather16.setImageResource(imageChoice(daily.weather.get(0).description))
-            ivWeather19.setImageResource(imageChoice(daily.weather.get(0).description))
-            ivWeather22.setImageResource(imageChoiceNight(daily.weather.get(0).description))
+        fun bind(listWeek: ListWeek) = with(binding) {
+            textDay.text = getDayOfWeek(listWeek.dt)
+            logDebug("adapter: ${listWeek.dtTxt}")
+            when(true){
+                listWeek.dtTxt.contains("12:00:00") -> {
+                    tvWeather13.text = listWeek.weather.get(0).main
+                    tvTemperature13.text = listWeek.main.temp.toInt().toString()
+                    ivWeather13.setImageResource(imageChoice(listWeek.weather.get(0).description))
+                }
+                listWeek.dtTxt.contains("15:00:00") -> {
+                    tvWeather16.text = listWeek.weather.get(0).main
+                    tvTemperature16.text = listWeek.main.temp.toInt().toString()
+                    ivWeather16.setImageResource(imageChoice(listWeek.weather.get(0).description))
+                }
+                listWeek.dtTxt.contains("18:00:00") -> {
+                    tvWeather19.text = listWeek.weather.get(0).main
+                    tvTemperature19.text = listWeek.main.temp.toInt().toString()
+                    ivWeather19.setImageResource(imageChoice(listWeek.weather.get(0).description))
+                }
+                listWeek.dtTxt.contains("21:00:00") -> {
+                    tvWeather22.text = listWeek.weather.get(0).main
+                    tvTemperature22.text = listWeek.main.temp.toInt().toString()
+                    ivWeather22.setImageResource(imageChoiceNight(listWeek.weather.get(0).description))
+                }
+
+            }
 
         }
 
