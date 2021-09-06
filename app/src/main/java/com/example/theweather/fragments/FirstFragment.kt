@@ -3,19 +3,16 @@ package com.example.theweather.fragments
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
-import com.example.theweather.R
+import androidx.fragment.app.Fragment
 import com.example.theweather.common.imageChoice
 import com.example.theweather.common.logDebug
 import com.example.theweather.databinding.FragmentFirstBinding
 import com.example.theweather.model.WeatherResponse
 import com.example.theweather.rest.API_WEATHER_KEY
 import com.example.theweather.rest.retrofit
-import com.google.android.libraries.places.internal.it
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -26,13 +23,13 @@ import retrofit2.Response
 
 class FirstFragment : Fragment() {
     private var _binding: FragmentFirstBinding? = null
-    private val binding: FragmentFirstBinding get() = requireNotNull(_binding)
+    private val binding get() = _binding!!
     private var location: MutableStateFlow<Location?>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -61,7 +58,7 @@ class FirstFragment : Fragment() {
                             response: Response<WeatherResponse>
                         ) {
                             logDebug("response.code(): ${response.code()}\n")
-                            logDebug("${response.body()}") // ==WeatherResponse
+                            //logDebug("${response.body()}") // ==WeatherResponse
 
                             binding.apply {
                                 temperature.text = response.body()?.main?.temp?.toInt().toString()

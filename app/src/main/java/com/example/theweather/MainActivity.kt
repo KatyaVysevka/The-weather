@@ -1,5 +1,6 @@
 package com.example.theweather
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.location.Location
 import android.net.Uri
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -64,6 +66,24 @@ class MainActivity : AppCompatActivity(), LocationView {
         }
     }
 
+
+    override fun dialogExplanationRequestLocationPermission() {
+        AlertDialog.Builder(this@MainActivity)
+            .setMessage(getString(R.string.explanationRequestLocationPermission))
+            .setTitle(getString(R.string.attention))
+            .setOnCancelListener { dialogInterface: DialogInterface? ->
+                requestLocationPermissions()
+            }
+            .setPositiveButton(
+                getString(R.string.ok)
+            ) { dialogInterface: DialogInterface?, i: Int ->
+                requestLocationPermissions()
+            }
+            .create()
+            .show()
+    }
+
+
     override fun requestLocationPermissions() {
         ActivityCompat.requestPermissions(
             this,
@@ -91,7 +111,8 @@ class MainActivity : AppCompatActivity(), LocationView {
                     locationHelper.checkIfLocationEnabled()
                 }
                 ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0]) -> {
-                    locationHelper.dialogExplanationRequestLocationPermission()
+                    //locationHelper.dialogExplanationRequestLocationPermission()
+                    dialogExplanationRequestLocationPermission()
                 }
                 else -> {
                     logDebug("Location Permissions Result: Failed!")
