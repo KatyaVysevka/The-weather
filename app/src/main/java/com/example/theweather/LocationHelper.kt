@@ -19,21 +19,21 @@ class LocationHelper(base: Context?, view: LocationView?) : ContextWrapper(base)
 
     private var locationView: WeakReference<LocationView>? = WeakReference(view)
 
-    fun dialogExplanationRequestLocationPermission() {
-        AlertDialog.Builder(this)
-            .setMessage(getString(R.string.explanationRequestLocationPermission))
-            .setTitle(getString(R.string.attention))
-            .setOnCancelListener { dialogInterface: DialogInterface? ->
-                locationView?.get()?.requestLocationPermissions()
-            }
-            .setPositiveButton(
-                getString(R.string.ok)
-            ) { dialogInterface: DialogInterface?, i: Int ->
-                locationView?.get()?.requestLocationPermissions()
-            }
-            .create()
-            .show()
-    }
+//    fun dialogExplanationRequestLocationPermission() {
+//        AlertDialog.Builder(this)
+//            .setMessage(getString(R.string.explanationRequestLocationPermission))
+//            .setTitle(getString(R.string.attention))
+//            .setOnCancelListener { dialogInterface: DialogInterface? ->
+//                locationView?.get()?.requestLocationPermissions()
+//            }
+//            .setPositiveButton(
+//                getString(R.string.ok)
+//            ) { dialogInterface: DialogInterface?, i: Int ->
+//                locationView?.get()?.requestLocationPermissions()
+//            }
+//            .create()
+//            .show()
+//    }
 
 //    fun attachView(view: MainView) {
 //        viewState = WeakReference(view)

@@ -61,7 +61,7 @@ class SecondFragment : Fragment() {
                             response: Response<Week>
                         ) {
                             logDebug("response.code(): ${response.code()}\n")
-                            logDebug("${response.body()}") // ==WeatherResponse
+                            //logDebug("${response.body()}") // ==WeatherResponse
 
                             adapter.submitList(response?.body()?.daily)
 
